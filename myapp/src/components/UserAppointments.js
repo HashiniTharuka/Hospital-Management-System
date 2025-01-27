@@ -1,45 +1,58 @@
-// src/components/UserAppointment.js
+// src/components/UserAppointmentsView.js
 import React, { useState, useEffect } from 'react';
-import AppointmentCard from './AppointmentCard'; // Assuming this is a separate component for displaying appointments
+import axios from 'axios';
+import AppointmentCard from './AppointmentCard'; // Assuming this exists
+import './UserAppointmentsView.css'; // Ensure this file is styled properly
 
-const UserAppointment = () => {
-  const [appointments, setAppointments] = useState([]);
+const UserAppointmentsView = () => {
+    const [appointments, setAppointments] = useState([]);
+    const [loading, setLoading] = useState(true); // Loading state
+    const [error, setError] = useState(null); // Error state
 
-  // Fetching the appointments (You can replace with your data fetching logic)
-  useEffect(() => {
-    // Example: Fetch data (You can replace with your API request logic)
-    fetch('/api/appointments')
-      .then(response => response.json())
-      .then(data => setAppointments(data))
-      .catch(error => console.error('Error fetching appointments:', error));
-  }, []);
+    useEffect(() => {
+        axios
+            .get('http://localhost:5000/appointments')
+            .then(response => {
+                setAppointments(response.data);
+                setLoading(false); // Data fetched, stop loading
+            })
+            .catch(err => {
+                console.error('Error fetching appointments:', err);
+                setError('Failed to load appointments. Please try again later.');
+                setLoading(false);
+            });
+    }, []);
 
-  // Handle edit and delete appointment actions
-  const handleEditAppointment = (appointmentId) => {
-    console.log('Edit appointment:', appointmentId);
-    // Your edit logic here
-  };
+    if (loading) {
+        return <div className="loading">Loading appointments...</div>; // Show loading indicator
+    }
 
-  const handleDeleteAppointment = (appointmentId) => {
-    console.log('Delete appointment:', appointmentId);
-    // Your delete logic here
-  };
+    if (error) {
+        return <div className="error">{error}</div>; // Show error message
+    }
 
-  return (
-    <div className="appointments">
-      <h3>Appointments ({appointments.length})</h3>
-      <div className="appointment-list">
-        {appointments.map(appointment => (
-          <AppointmentCard
-            key={appointment._id}
-            appointment={appointment}
-            onEdit={handleEditAppointment}
-            onDelete={handleDeleteAppointment}
-          />
-        ))}
-      </div>
-    </div>
-  );
+    return (
+        <div className="user-appointments-view">
+            <div className="appointments-section">
+                <h3>Your Upcoming Appointments</h3>
+                <div className="appointment-list">
+                    {appointments.length > 0 ? (
+                        appointments.map(appointment => (
+                            <AppointmentCard
+                                key={appointment._id}
+                                id={appointment._id}
+                                patientName={appointment.patientName}
+                                doctorName={appointment.doctorName}
+                                date={appointment.date}
+                            />
+                        ))
+                    ) : (
+                        <p>No appointments found. Please add one.</p>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
 };
 
-export default UserAppointment;
+export default UserAppointmentsView;

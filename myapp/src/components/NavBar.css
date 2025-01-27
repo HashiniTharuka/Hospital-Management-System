@@ -6,6 +6,7 @@ nav {
     align-items: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 100%; /* Make sure the navbar spans the full width */
+    height:40px;
 }
 
 nav ul {
@@ -23,7 +24,7 @@ nav ul li {
 nav ul li a {
     text-decoration: none;
     color: #d3e3e5;
-    font-size: 1rem;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     transition: color 0.3s ease;
@@ -50,7 +51,7 @@ nav ul li.admin-login {
 /* Position the admin login button in the top-right corner */
 .admin-login-button {
     position: absolute;
-    top: 6px; /* Adjust the top distance */
+    top: 10px; /* Adjust the top distance */
     right: 20px; /* Adjust the right distance */
     padding: 10px 20px;
     background-color: #375e5f; /* Button color */

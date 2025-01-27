@@ -1,0 +1,53 @@
+/* src/components/UserAppointmentsView.css */
+.user-appointments-view {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .user-appointments-view-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .user-appointments-view-header img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .appointments-section {
+    padding: 20px;
+  }
+  
+  .appointment-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .add-appointment-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  .add-appointment-button:hover {
+    background-color: #218838;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    font-size: 18px;
+    color: #d9534f;
+  }
+  
+  .loading {
+    font-weight: bold;
+  }
+  
+  .error {
+    color: #f44336;
+  }
+  

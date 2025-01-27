@@ -19,7 +19,7 @@ import AdminLogin from './components/AdminLoginPage';
 import './App.css';
 import './components/NavBar.css';
 import Doctors_view from './components/Doctors_view';
-import UserAppointments from './components/UserAppointments';  // Import the component
+import UserAppointments from './components/UserAppointments'; // Import the new component
 
 import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt } from 'react-icons/fa';
 
@@ -30,21 +30,7 @@ const ConditionalNavBar = () => {
     const shouldHideNavBar = hideNavBarPaths.includes(location.pathname);
 
     if (shouldHideNavBar) {
-        return (
-            <nav className="admin-nav">
-                <ul>
-                    <li>
-                        <Link to="/doctors">Doctors</Link>
-                    </li>
-                    <li>
-                        <Link to="/user-appointments/1">User Appointments</Link>  {/* Example userId */}
-                    </li>
-                    <li>
-                        <Link to="/home">Logout</Link>
-                    </li>
-                </ul>
-            </nav>
-        );
+        return null; // If the path matches, hide the NavBar
     }
 
     return (
@@ -113,8 +99,7 @@ const App = () => {
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/adminlogin" element={<AdminLogin />} />
                     <Route path="/doctorview" element={<Doctors_view />} />
-                    <Route path="/user-appointments/:userId" element={<UserAppointments />} /> {/* Corrected this line */}
-
+                    <Route path="/userappointments" element={<UserAppointments />} /> {/* Fixed the route */}
                     <Route path="/" element={<Home />} /> {/* Default to Home when no specific route matches */}
                 </Routes>
 

@@ -5,6 +5,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 40px;
     height: 100vh;
 }
 
@@ -52,7 +53,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
     gap: 20px; /* Gap between images */
-    margin-top: 20px;
+    margin-top: px;
     margin: 20px auto;
     display: block;
     width: 100%;
