@@ -1,0 +1,117 @@
+/* /src/components/Detail.css */
+
+.detail-page {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.detail-content {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 90%; /* Adjust based on your design */
+    margin: 0 auto;
+}
+
+.detail-content h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.detail-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.detail-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 15px;
+}
+
+.upper-left-image {
+    max-width: 50%; /* Adjust this value as needed */
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; /* Center the image horizontally */
+}
+
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Three columns with equal width */
+    gap: 20px; /* Gap between images */
+    margin-top: 20px;
+    margin: 20px auto;
+    display: block;
+    width: 100%;
+    height: 50%;
+
+}
+
+.image-grid img {
+    max-width: 100%; /* Ensure images don't exceed their container */
+    height: auto;
+    border-radius: 3%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+.detail-content {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.detail-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.detail-content img {
+    width: 50%; /* Reduce the size of the image */
+    height: auto;
+    margin: 20px auto;
+    display: block;
+}
+
+.emergency-image {
+    width: 50%; /* Adjust the maximum width as needed */
+    height: auto; /* Maintain aspect ratio */
+    margin: auto;
+}
+
+
+.cardiology-image {
+    width: 40%;
+    height: auto;
+    margin: 20px auto; /* This centers the image horizontally and adds 20px margin to the top and bottom */
+    display: block; /* Makes the image a block element to center it */
+}
+.pediatrics-image {
+    width: 50%;
+    height: auto;
+    display: block;
+    margin: 20px auto; /* Centers the image horizontally and adds margin */
+}
+.orthopedics-image {
+    width: 50%;
+    margin: 20px auto;
+    display: block;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+

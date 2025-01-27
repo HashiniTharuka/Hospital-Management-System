@@ -1,0 +1,73 @@
+nav {
+    background-color: #3c88a1;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%; /* Make sure the navbar spans the full width */
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    flex-grow: 1; /* Allow the ul to take up available space */
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #d3e3e5;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #134f56;
+}
+
+.active {
+    color: #00bcd4;
+    font-weight: bold;
+}
+
+.icon {
+    margin-right: 8px;
+    color: #a8cece;
+}
+
+/* Right-align the Admin Login item */
+nav ul li.admin-login {
+    margin-left: auto; /* Push this item to the right */
+}
+/* Position the admin login button in the top-right corner */
+.admin-login-button {
+    position: absolute;
+    top: 6px; /* Adjust the top distance */
+    right: 20px; /* Adjust the right distance */
+    padding: 10px 20px;
+    background-color: #375e5f; /* Button color */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.admin-login-button:hover {
+    background-color: #0c6e51; /* Darker color on hover */
+    margin-top: 2PX;
+}
+
+.admin-login-button .icon {
+    margin-right: 8px; /* Space between icon and text */
+}

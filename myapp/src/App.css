@@ -1,0 +1,163 @@
+/* General Styles for Navbar */
+nav {
+    background-color: #00a7aa;
+    padding: 20px 0.5rem; /* Increase padding vertically and set 0.5rem left and right */
+    border-radius: 5px; /* Rounded corners for a sleek look */
+    width: 100%; /* Make navbar full width */
+    margin-bottom: 20px; /* Optional: Add margin at the bottom */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center; /* Center items in the navbar */
+}
+
+li {
+    margin-right: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s ease; /* Smooth color transition */
+}
+
+a:hover {
+    color: #ffd700; /* Gold color on hover */
+}
+
+.active {
+    color: #ffd700; /* Highlight active link */
+}
+
+/* Flexbox Utilities */
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-row {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Rounded edges */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for a 3D effect */
+}
+
+.hero-text {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 1.5rem; /* Larger text for emphasis */
+}
+
+/* Features Section */
+.features-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap; /* Ensure responsiveness on smaller screens */
+    margin-top: 30px;
+    padding: 20px;
+    gap: 20px; /* Space between features */
+}
+
+.feature {
+    text-align: center;
+    width: 200px; /* Ensure consistent sizing */
+}
+
+.feature .icon {
+    font-size: 2.5em;
+    color: #00a7aa;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    font-size: 1rem;
+    color: #333;
+}
+
+/* Page Content */
+.page-content {
+    padding: 20px;
+    line-height: 1.6; /* Better readability */
+    font-size: 1.1rem;
+}
+
+/* Services Section */
+.services-section {
+    text-align: left;
+    padding: 20px;
+}
+
+.services-section ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+
+.services-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer */
+footer {
+    background-color: #00a7aa;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px 5px 0 0; /* Rounded corners at the top */
+    font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column; /* Stack menu items vertically */
+        align-items: center;
+    }
+
+    .features-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero-section {
+        height: 300px; /* Adjust height for smaller screens */
+    }
+
+    .hero-text {
+        font-size: 1.2rem; /* Smaller text for smaller screens */
+    }
+
+    .feature {
+        width: 100%; /* Full width for small screens */
+    }
+}
