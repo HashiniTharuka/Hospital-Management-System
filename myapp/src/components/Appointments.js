@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AppointmentCard from './AppointmentCard';
 import { FaUserMd, FaCalendarAlt } from 'react-icons/fa';
 import './Appointments.css';
 import { doctors } from './DoctorsData'; // Import the doctors data
@@ -14,6 +13,7 @@ const Appointments = () => {
     });
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:5000/appointments')
@@ -27,6 +27,8 @@ const Appointments = () => {
             .then(response => {
                 setAppointments([...appointments, response.data]);
                 setNewAppointment({ patientName: '', doctorName: '', date: '' });
+                setSuccessMessage('Appointment added successfully!');
+                setTimeout(() => setSuccessMessage(''), 3000); // Clear the success message after 3 seconds
             })
             .catch(error => console.error('Error adding appointment:', error));
     };
@@ -83,14 +85,7 @@ const Appointments = () => {
                     </div>
                     <button type="submit">{isEditMode ? 'Update Appointment' : 'Add Appointment'}</button>
                 </form>
-            </div>
-            <div className="appointments">
-                <h3>Appointments ({appointments.length})</h3>
-                <div className="appointment-list">
-                    {appointments.map(appointment => (
-                        <AppointmentCard key={appointment._id} appointment={appointment} onEdit={handleEditAppointment} onDelete={handleDeleteAppointment} />
-                    ))}
-                </div>
+                {successMessage && <div className="success-message">{successMessage}</div>}
             </div>
         </div>
     );

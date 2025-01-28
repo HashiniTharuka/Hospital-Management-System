@@ -1,72 +1,69 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // For navigation
-import axios from 'axios';
-import DoctorCard from './DoctorCard';
-import './Doctors_view.css'; // Ensure this file is styled properly
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Doctors_view.css"; // Ensure this file styles your doctor cards properly
 
-const Doctors_view = () => {
-    const [doctors, setDoctors] = useState([]);
-    const [loading, setLoading] = useState(true); // Loading state
-    const [error, setError] = useState(null); // Error state
-    const navigate = useNavigate(); // For navigation
+const DoctorView = () => {
+  const [doctors, setDoctors] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    useEffect(() => {
-        axios
-            .get('http://localhost:5000/doctors')
-            .then(response => {
-                setDoctors(response.data);
-                setLoading(false); // Data fetched, stop loading
-            })
-            .catch(err => {
-                console.error('Error fetching doctors:', err);
-                setError('Failed to load doctors. Please try again later.');
-                setLoading(false);
-            });
-    }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/doctors") // Fetch doctors from your API
+      .then((response) => {
+        setDoctors(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError("Failed to load doctors. Please try again later.");
+        setLoading(false);
+      });
+  }, []);
 
-    const handleAddAppointment = () => {
-        navigate('/add-appointment'); // Navigate to add appointment page
-    };
+  if (loading) return <div className="loading">Loading doctors...</div>;
+  if (error) return <div className="error">{error}</div>;
 
-    if (loading) {
-        return <div className="loading">Loading doctors...</div>; // Show loading indicator
-    }
-
-    if (error) {
-        return <div className="error">{error}</div>; // Show error message
-    }
-
-    return (
-        <div className="doctors-view">
-            <header className="doctors-view-header">
-                <h1>Meet Our Doctors</h1>
-                <p>Discover the skilled professionals who are ready to assist you with your medical needs.</p>
-                <img src="https://aquinahealth.com/wp-content/uploads/2018/09/Pulse_91918.jpeg" alt="Doctors" />
-            </header>
-            <div className="doctors-view-section">
-                <h3>Your Trusted Medical Team </h3>
-              
-                <div className="doctor-list">
-                    {doctors.length > 0 ? (
-                        doctors.map(doctor => (
-                            <DoctorCard
-                                key={doctor._id}
-                                id={doctor._id}
-                                name={doctor.name}
-                                specialization={doctor.specialization}
-                                availability={doctor.availability}
-                                image={doctor.image}
-                                description={doctor.description}
-                                givepermisiontoeditanddelete={false}
-                            />
-                        ))
-                    ) : (
-                        <p>No doctors available at the moment. Please check back later.</p>
-                    )}
-                </div>
+  return (
+    <div className="doctor-view-page">
+      <header className="doctor-view-header">
+        <h1>Meet Our Expert Doctors</h1>
+        <p>
+          Discover skilled and compassionate professionals dedicated to your
+          healthcare needs.
+        </p>
+      </header>
+      <div className="doctor-list">
+        {doctors.map((doctor) => (
+          <div className="doctor-card" key={doctor._id}>
+            <div className="doctor-image-container">
+              <img
+                src={doctor.imageUrl || "https://via.placeholder.com/150"}
+                alt={`${doctor.name}'s photo`}
+                className="doctor-image"
+              />
             </div>
-        </div>
-    );
+
+            <div className="doctor-details">
+              <h2>{doctor.name}</h2>
+              <p>
+                <strong>Specialty:</strong> {doctor.specialty}
+              </p>
+              <p>
+                <strong>Availability:</strong> {doctor.availability.date} (
+                {doctor.availability.timeRange})
+              </p>
+              <p>
+                <strong>Joined:</strong>{" "}
+                {new Date(doctor.dateAdded).toLocaleDateString()}
+              </p>
+            </div>
+
+            
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
-export default Doctors_view;
+export default DoctorView;

@@ -23,9 +23,10 @@ import UserAppointments from './components/UserAppointments'; // Import the new 
 
 import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt } from 'react-icons/fa';
 
+// Conditional NavBar rendering based on the route
 const ConditionalNavBar = () => {
     const location = useLocation();
-    const hideNavBarPaths = ['/admin', '/adminlogin', '/doctors', '/patients_view']; // Paths where NavBar should be hidden
+    const hideNavBarPaths = ['/admin', '/adminlogin', '/doctors', '/patients_view', '/userappointments']; // Added /userappointments to hide NavBar
 
     const shouldHideNavBar = hideNavBarPaths.includes(location.pathname);
 
