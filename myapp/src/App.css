@@ -1,11 +1,33 @@
-/* General Styles for Navbar */
+/* Modern Hospital Management System UI */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    color: #2c3e50;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Modern Navbar */
 nav {
-    background-color: #00a7aa;
-    padding: 20px 0.5rem; /* Increase padding vertically and set 0.5rem left and right */
-    border-radius: 5px; /* Rounded corners for a sleek look */
-    width: 100%; /* Make navbar full width */
-    margin-bottom: 20px; /* Optional: Add margin at the bottom */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 15px 0;
+    border-radius: 0 0 20px 20px;
+    width: 100%;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 ul {
@@ -13,66 +35,163 @@ ul {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center; /* Center items in the navbar */
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
 }
 
 li {
-    margin-right: 20px;
+    position: relative;
 }
 
 a {
     text-decoration: none;
     color: white;
-    font-weight: bold;
-    transition: color 0.3s ease; /* Smooth color transition */
+    font-weight: 600;
+    font-size: 16px;
+    padding: 12px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+a:hover::before {
+    left: 100%;
 }
 
 a:hover {
-    color: #ffd700; /* Gold color on hover */
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .active {
-    color: #ffd700; /* Highlight active link */
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Flexbox Utilities */
-.flex-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.icon {
+    font-size: 18px;
 }
 
-.flex-row {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.admin-login-button {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white !important;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.3);
+}
+
+.admin-login-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
+    background: linear-gradient(45deg, #ee5a24, #ff6b6b);
+}
+
+/* Modern Card Design */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Modern Buttons */
+.btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #2c3e50;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
 }
 
 /* Hero Section */
 .hero-section {
     position: relative;
-    height: 400px;
+    height: 500px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    border-radius: 10px; /* Rounded edges */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for a 3D effect */
+    margin-bottom: 40px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.7), rgba(118, 75, 162, 0.7));
+    z-index: 1;
 }
 
 .hero-text {
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 20px;
-    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2c3e50;
+    padding: 40px;
+    border-radius: 20px;
     text-align: center;
-    font-size: 1.5rem; /* Larger text for emphasis */
+    font-size: 1.8rem;
+    font-weight: 700;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(10px);
 }
 
 /* Features Section */
@@ -126,38 +245,116 @@ a:hover {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Footer */
+/* Modern Footer */
 footer {
-    background-color: #00a7aa;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     text-align: center;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 5px 5px 0 0; /* Rounded corners at the top */
-    font-size: 0.9rem;
+    padding: 40px 20px;
+    margin-top: 60px;
+    border-radius: 25px 25px 0 0;
+    font-size: 1rem;
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading and Error States */
+.loading, .error {
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    margin: 20px 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.loading h2, .error h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.loading p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+}
+
+.error {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    border: 2px solid #ff6b6b;
+    color: #c62828;
+}
+
+.error button {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 15px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.error button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.4);
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    nav ul {
-        flex-direction: column; /* Stack menu items vertically */
-        align-items: center;
+    .container {
+        padding: 0 15px;
     }
-
+    
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px 0;
+    }
+    
+    a {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .hero-section {
+        height: 350px;
+        margin-bottom: 30px;
+    }
+    
+    .hero-text {
+        font-size: 1.4rem;
+        padding: 30px 20px;
+    }
+    
+    .card {
+        padding: 20px;
+        margin: 10px 0;
+    }
+    
     .features-section {
         flex-direction: column;
-        gap: 10px;
+        gap: 20px;
     }
-
-    .hero-section {
-        height: 300px; /* Adjust height for smaller screens */
-    }
-
-    .hero-text {
-        font-size: 1.2rem; /* Smaller text for smaller screens */
-    }
-
+    
     .feature {
-        width: 100%; /* Full width for small screens */
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-text {
+        font-size: 1.2rem;
+        padding: 20px 15px;
+    }
+    
+    .card {
+        padding: 15px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 14px;
     }
 }

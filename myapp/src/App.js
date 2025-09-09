@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Appointments from './components/Appointments';
 import Doctors from './components/Doctors';
 import Patients from './components/Patients';
@@ -17,26 +16,35 @@ import SurgeryDetail from './components/SurgeryDetail';
 import Footer from './components/Footer';
 import Admin from './components/Admin';
 import AdminLogin from './components/AdminLoginPage';
-import Login from './components/Login';
-import Register from './components/Register';
-import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import './components/NavBar.css';
 import Doctors_view from './components/Doctors_view';
-import UserAppointments from './components/UserAppointments';
+import UserAppointments from './components/UserAppointments';  // Import the component
 
-import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa';
+import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt } from 'react-icons/fa';
 
-// Conditional NavBar rendering based on the route
 const ConditionalNavBar = () => {
     const location = useLocation();
-    const { isAuthenticated, user, logout } = useAuth();
-    const hideNavBarPaths = ['/admin', '/adminlogin', '/login', '/register', '/doctors', '/patients_view', '/userappointments'];
+    const hideNavBarPaths = ['/admin', '/adminlogin', '/doctors', '/patients_view']; // Paths where NavBar should be hidden
 
     const shouldHideNavBar = hideNavBarPaths.includes(location.pathname);
 
     if (shouldHideNavBar) {
-        return null;
+        return (
+            <nav className="admin-nav">
+                <ul>
+                    <li>
+                        <Link to="/doctors">Doctors</Link>
+                    </li>
+                    <li>
+                        <Link to="/user-appointments/1">User Appointments</Link>  {/* Example userId */}
+                    </li>
+                    <li>
+                        <Link to="/home">Logout</Link>
+                    </li>
+                </ul>
+            </nav>
+        );
     }
 
     return (
@@ -62,112 +70,57 @@ const ConditionalNavBar = () => {
                         <FaCog className="icon" /> Services
                     </Link>
                 </li>
-                {isAuthenticated && (
-                    <>
-                        <li className={location.pathname === '/appointments' ? 'active' : ''}>
-                            <Link to="/appointments">
-                                <FaClipboardList className="icon" /> Appointments
-                            </Link>
-                        </li>
-                        <li className={location.pathname === '/doctorview' ? 'active' : ''}>
-                            <Link to="/doctorview">
-                                <FaUserMd className="icon" /> Doctors
-                            </Link>
-                        </li>
-                    </>
-                )}
+                <li className={location.pathname === '/appointments' ? 'active' : ''}>
+                    <Link to="/appointments">
+                        <FaClipboardList className="icon" /> Appointments
+                    </Link>
+                </li>
+                <li className={location.pathname === '/doctorview' ? 'active' : ''}>
+                    <Link to="/doctorview">
+                        <FaUserMd className="icon" /> Doctors
+                    </Link>
+                </li>
             </ul>
 
-            <div className="nav-auth">
-                {isAuthenticated ? (
-                    <div className="user-menu">
-                        <span>Welcome, {user?.name}</span>
-                        {user?.role === 'admin' && (
-                            <Link to="/admin" className="admin-link">
-                                <FaUserMd className="icon" /> Admin
-                            </Link>
-                        )}
-                        <button onClick={logout} className="logout-button">
-                            <FaSignOutAlt className="icon" /> Logout
-                        </button>
-                    </div>
-                ) : (
-                    <div className="auth-buttons">
-                        <Link to="/login" className="login-button">
-                            <FaSignInAlt className="icon" /> Login
-                        </Link>
-                        <Link to="/register" className="register-button">
-                            Register
-                        </Link>
-                        <Link to="/adminlogin" className="admin-login-button">
-                            Admin Login
-                        </Link>
-                    </div>
-                )}
-            </div>
+            {/* Admin Login Button in the Top-Right Corner */}
+            <Link to="/adminlogin" className="admin-login-button">
+                <FaSignInAlt className="icon" /> Admin Login
+            </Link>
         </nav>
     );
 };
 
 const App = () => {
     return (
-        <AuthProvider>
-            <Router>
-                <div className="container">
-                    <ConditionalNavBar />
+        <Router>
+            <div className="container">
+                <ConditionalNavBar /> {/* Render NavBar conditionally */}
 
-                    <Routes>
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/contact" element={<Contact />} />
-                        <Route path="/services" element={<Services />} />
-                        <Route path="/services/cardiology" element={<CardiologyDetail />} />
-                        <Route path="/services/pediatrics" element={<PediatricsDetail />} />
-                        <Route path="/services/orthopedics" element={<OrthopedicsDetail />} />
-                        <Route path="/services/general-checkups" element={<GeneralCheckupsDetail />} />
-                        <Route path="/services/emergency-services" element={<EmergencyServicesDetail />} />
-                        <Route path="/services/surgery" element={<SurgeryDetail />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/adminlogin" element={<AdminLogin />} />
-                        
-                        {/* Protected Routes */}
-                        <Route path="/appointments" element={
-                            <ProtectedRoute>
-                                <Appointments />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/doctorview" element={<Doctors_view />} />
-                        <Route path="/userappointments" element={
-                            <ProtectedRoute>
-                                <UserAppointments />
-                            </ProtectedRoute>
-                        } />
-                        
-                        {/* Admin Routes */}
-                        <Route path="/admin" element={
-                            <ProtectedRoute requireAdmin={true}>
-                                <Admin />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/doctors" element={
-                            <ProtectedRoute requireAdmin={true}>
-                                <Doctors />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/patients" element={
-                            <ProtectedRoute requireAdmin={true}>
-                                <Patients />
-                            </ProtectedRoute>
-                        } />
-                        
-                        <Route path="/" element={<Home />} />
-                    </Routes>
+                <Routes>
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/services/cardiology" element={<CardiologyDetail />} />
+                    <Route path="/services/pediatrics" element={<PediatricsDetail />} />
+                    <Route path="/services/orthopedics" element={<OrthopedicsDetail />} />
+                    <Route path="/services/general-checkups" element={<GeneralCheckupsDetail />} />
+                    <Route path="/services/emergency-services" element={<EmergencyServicesDetail />} />
+                    <Route path="/services/surgery" element={<SurgeryDetail />} />
+                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/doctors" element={<Doctors />} />
+                    <Route path="/patients" element={<Patients />} />
+                    <Route path="/admin" element={<Admin />} />
+                    <Route path="/adminlogin" element={<AdminLogin />} />
+                    <Route path="/doctorview" element={<Doctors_view />} />
+                    <Route path="/user-appointments/:userId" element={<UserAppointments />} /> {/* Corrected this line */}
 
-                    <Footer />
-                </div>
-            </Router>
-        </AuthProvider>
+                    <Route path="/" element={<Home />} /> {/* Default to Home when no specific route matches */}
+                </Routes>
+
+                <Footer /> {/* Render Footer outside of Routes to display on every page */}
+            </div>
+        </Router>
     );
 }
 
