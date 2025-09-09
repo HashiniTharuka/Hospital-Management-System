@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Doctor = require('../models/Doctor');
+const { authenticateToken, requireAdmin } = require('../middleware/auth');
 
 // GET all doctors
 router.get('/', async (req, res) => {
@@ -12,8 +13,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST a new doctor
-router.post('/add', async (req, res) => {
+// POST a new doctor (admin only)
+router.post('/add', authenticateToken, requireAdmin, async (req, res) => {
   const { name, specialty, availability, imageUrl } = req.body;
 
   const newDoctor = new Doctor({
@@ -42,8 +43,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// DELETE a doctor by ID
-router.delete('/:id', async (req, res) => {
+// DELETE a doctor by ID (admin only)
+router.delete('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const deletedDoctor = await Doctor.findByIdAndDelete(req.params.id);
     if (!deletedDoctor) return res.status(404).json({ message: "Doctor not found" });
@@ -53,8 +54,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// PUT (update) a doctor by ID
-router.put('/:id', async (req, res) => {
+// PUT (update) a doctor by ID (admin only)
+router.put('/:id', authenticateToken, requireAdmin, async (req, res) => {
   try {
     const updatedDoctor = await Doctor.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedDoctor) return res.status(404).json({ message: "Doctor not found" });

@@ -1,8 +1,10 @@
 // src/components/UserAppointmentsView.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import AppointmentCard from './AppointmentCard'; // Assuming this exists
-import './UserAppointmentsView.css'; // Ensure this file is styled properly
+import AppointmentCard from './AppointmentCard';
+import Loading from './Loading';
+import Error from './Error';
+import './UserAppointmentsView.css';
 
 const UserAppointmentsView = () => {
     const [appointments, setAppointments] = useState([]);
@@ -11,7 +13,7 @@ const UserAppointmentsView = () => {
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/appointments')
+            .get('http://localhost:5000/api/appointments')
             .then(response => {
                 setAppointments(response.data);
                 setLoading(false); // Data fetched, stop loading
@@ -24,11 +26,11 @@ const UserAppointmentsView = () => {
     }, []);
 
     if (loading) {
-        return <div className="loading">Loading appointments...</div>; // Show loading indicator
+        return <Loading message="Loading appointments..." />;
     }
 
     if (error) {
-        return <div className="error">{error}</div>; // Show error message
+        return <Error message={error} onRetry={() => window.location.reload()} />;
     }
 
     return (
@@ -47,7 +49,7 @@ const UserAppointmentsView = () => {
                             />
                         ))
                     ) : (
-                        <p>No appointments found. Please add one.</p>
+                        <p>No appointments found. <a href="/appointments">Book an appointment</a></p>
                     )}
                 </div>
             </div>

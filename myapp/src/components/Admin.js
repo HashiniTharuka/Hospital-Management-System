@@ -1,22 +1,26 @@
 // src/components/Admin.js
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
-import { FaUsers, FaUserMd, FaSignOutAlt, FaCalendarAlt } from 'react-icons/fa'; // Importing the calendar icon
-import './Admin.css'; // Make sure to create and style this file
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { FaUsers, FaUserMd, FaSignOutAlt, FaCalendarAlt } from 'react-icons/fa';
+import { useAuth } from '../contexts/AuthContext';
+import './Admin.css';
 
 const Admin = () => {
-  const handleLogout = () => {
-    // Clear authentication tokens or session data here
-    localStorage.removeItem('authToken'); // Adjust based on your authentication method
+  const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
-    // Redirect to login page or home page
-    window.location.href = '/home'; // Adjust the path based on your app's routing
+  const handleLogout = () => {
+    logout();
+    navigate('/home');
   };
 
   return (
     <div className="admin-container">
       <header className="admin-header">
         <h1>Admin Dashboard</h1>
+        <div className="admin-user-info">
+          <span>Welcome, {user?.name}</span>
+        </div>
       </header>
       
       <div className="admin-navigation">

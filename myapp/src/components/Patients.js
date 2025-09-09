@@ -11,14 +11,14 @@ const Patients = () => {
     const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
-        axios.get('http://localhost:5000/patients')
+        axios.get('http://localhost:5000/api/patients')
             .then(response => setPatients(response.data))
             .catch(error => console.error('Error fetching patients:', error));
     }, []);
 
     const handleAddPatient = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/patients/add', newPatient)
+        axios.post('http://localhost:5000/api/patients/add', newPatient)
             .then(response => {
                 setPatients([...patients, response.data]);
                 setNewPatient({ name: '', age: '', gender: '', photoUrl: '' });
@@ -28,7 +28,7 @@ const Patients = () => {
 
     const handleUpdatePatient = (id, e) => {
         e.preventDefault();
-        axios.post(`http://localhost:5000/patients/update/${id}`, selectedPatient)
+        axios.post(`http://localhost:5000/api/patients/update/${id}`, selectedPatient)
             .then(response => {
                 const updatePat = { ...selectedPatient, _id: id };
                 setPatients(patients.map(patient => (patient._id === id ? updatePat : patient)));
@@ -39,7 +39,7 @@ const Patients = () => {
     };
 
     const handleDeletePatient = (id) => {
-        axios.delete(`http://localhost:5000/patients/delete/${id}`)
+        axios.delete(`http://localhost:5000/api/patients/delete/${id}`)
             .then(response => {
                 setSelectedPatient(null);
                 setPatients(patients.filter(patient => patient._id !== id));
@@ -58,7 +58,7 @@ const Patients = () => {
             const formData = new FormData();
             formData.append('photo', file);
 
-            axios.post('http://localhost:5000/patients/upload', formData)
+            axios.post('http://localhost:5000/api/patients/upload', formData)
                 .then(response => {
                     const photoUrl = response.data.photoUrl;
                     if (isEditMode) {

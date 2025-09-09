@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAuth } from '../contexts/AuthContext';
-import './AdminLogin.css';
+import './Login.css';
 
-const AdminLogin = () => {
+const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -30,12 +28,12 @@ const AdminLogin = () => {
     const result = await login(formData.email, formData.password);
     
     if (result.success) {
-      toast.success('Login Successful', { position: 'top-center' });
+      toast.success('Login successful!');
       setTimeout(() => {
-        navigate('/admin');
+        navigate('/home');
       }, 1000);
     } else {
-      toast.error('Invalid credentials', { position: 'top-center' });
+      toast.error(result.message);
     }
     
     setLoading(false);
@@ -44,25 +42,25 @@ const AdminLogin = () => {
   return (
     <div className="login-container">
       <div className="login-box">
-        <h2>Admin Login</h2>
+        <h2>Login</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <FontAwesomeIcon icon={faUser} className="icon" />
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
+              id="email"
               name="email"
-              placeholder="Admin Email"
               value={formData.email}
               onChange={handleChange}
               required
             />
           </div>
-          <div className="input-group">
-            <FontAwesomeIcon icon={faLock} className="icon" />
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
             <input
               type="password"
+              id="password"
               name="password"
-              placeholder="Password"
               value={formData.password}
               onChange={handleChange}
               required
@@ -72,8 +70,11 @@ const AdminLogin = () => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <p className="user-login-link">
-          <a href="/login">User Login</a>
+        <p className="register-link">
+          Don't have an account? <Link to="/register">Register here</Link>
+        </p>
+        <p className="admin-link">
+          <Link to="/adminlogin">Admin Login</Link>
         </p>
       </div>
       <ToastContainer />
@@ -81,4 +82,4 @@ const AdminLogin = () => {
   );
 };
 
-export default AdminLogin;
+export default Login;

@@ -8,6 +8,7 @@ require('dotenv').config();
 const upload = require('./middleware/upload'); 
 
 // Import routes
+const authRouter = require('./routes/auth');
 const patientsRouter = require('./routes/patients');
 const doctorsRouter = require('./routes/doctors');
 const appointmentsRouter = require('./routes/appointments');
@@ -37,10 +38,11 @@ mongoose.connect(mongoURI, {
   });
 
 // Routes
-app.use('/patients', patientsRouter);
-app.use('/doctors', doctorsRouter);
-app.use('/appointments', appointmentsRouter);
-app.use('/contacts', contactsRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/patients', patientsRouter);
+app.use('/api/doctors', doctorsRouter);
+app.use('/api/appointments', appointmentsRouter);
+app.use('/api/contacts', contactsRouter);
 
 // Undefined Route Handler for all unhandled routes
 app.use((req, res) => {

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaUserMd, FaCalendarAlt } from 'react-icons/fa';
 import './Appointments.css';
-import { doctors } from './DoctorsData'; // Import the doctors data
 
 const Appointments = () => {
     const [appointments, setAppointments] = useState([]);
+    const [doctors, setDoctors] = useState([]);
     const [newAppointment, setNewAppointment] = useState({
         patientName: '',
         doctorName: '',
@@ -16,26 +16,40 @@ const Appointments = () => {
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:5000/appointments')
+        // Fetch appointments
+        axios.get('http://localhost:5000/api/appointments')
             .then(response => setAppointments(response.data))
             .catch(error => console.error('Error fetching appointments:', error));
+        
+        // Fetch doctors
+        axios.get('http://localhost:5000/api/doctors')
+            .then(response => setDoctors(response.data))
+            .catch(error => console.error('Error fetching doctors:', error));
     }, []);
 
     const handleAddAppointment = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/appointments/add', newAppointment)
+        const appointmentData = {
+            doctorName: newAppointment.doctorName,
+            date: newAppointment.date
+        };
+        axios.post('http://localhost:5000/api/appointments/add', appointmentData)
             .then(response => {
                 setAppointments([...appointments, response.data]);
                 setNewAppointment({ patientName: '', doctorName: '', date: '' });
                 setSuccessMessage('Appointment added successfully!');
-                setTimeout(() => setSuccessMessage(''), 3000); // Clear the success message after 3 seconds
+                setTimeout(() => setSuccessMessage(''), 3000);
             })
             .catch(error => console.error('Error adding appointment:', error));
     };
 
     const handleUpdateAppointment = (id, e) => {
         e.preventDefault();
-        axios.post(`http://localhost:5000/appointments/update/${id}`, selectedAppointment)
+        const updateData = {
+            doctorName: selectedAppointment.doctorName,
+            date: selectedAppointment.date
+        };
+        axios.post(`http://localhost:5000/api/appointments/update/${id}`, updateData)
             .then(response => {
                 const updateApp = { ...selectedAppointment, _id: id };
                 setAppointments(appointments.map(appointment => (appointment._id === id ? updateApp : appointment)));
@@ -46,7 +60,7 @@ const Appointments = () => {
     };
 
     const handleDeleteAppointment = (id) => {
-        axios.delete(`http://localhost:5000/appointments/delete/${id}`)
+        axios.delete(`http://localhost:5000/api/appointments/delete/${id}`)
             .then(response => setAppointments(appointments.filter(appointment => appointment._id !== id)))
             .catch(error => console.error('Error deleting appointment:', error));
     };
@@ -66,10 +80,6 @@ const Appointments = () => {
             <div className="add-form">
                 <h4>{isEditMode ? 'Edit Appointment' : 'Add New Appointment'} <FaUserMd /></h4>
                 <form className="appointment-form" onSubmit={isEditMode ? (e) => handleUpdateAppointment(selectedAppointment._id, e) : handleAddAppointment}>
-                    <div className="form-group">
-                        <label>Patient Name:</label>
-                        <input type="text" value={isEditMode ? selectedAppointment.patientName : newAppointment.patientName} onChange={(e) => isEditMode ? setSelectedAppointment({ ...selectedAppointment, patientName: e.target.value }) : setNewAppointment({ ...newAppointment, patientName: e.target.value })} />
-                    </div>
                     <div className="form-group">
                         <label>Doctor Name:</label>
                         <select value={isEditMode ? selectedAppointment.doctorName : newAppointment.doctorName} onChange={(e) => isEditMode ? setSelectedAppointment({ ...selectedAppointment, doctorName: e.target.value }) : setNewAppointment({ ...newAppointment, doctorName: e.target.value })}>

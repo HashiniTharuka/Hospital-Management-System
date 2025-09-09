@@ -3,42 +3,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const AppointmentCard = ({ appointment, onEdit, onDelete }) => {
-  // Destructure with default values or use optional chaining to avoid errors
-  const { patientName = 'Unknown Patient', doctorName = 'Unknown Doctor', date = new Date() } = appointment || {};
-
+const AppointmentCard = ({ id, patientName, doctorName, date, onEdit, onDelete }) => {
   return (
     <div className="appointment-card">
       <p>
         <span>Patient:</span>
-        {patientName}
+        {patientName || 'Unknown Patient'}
       </p>
       <p>
         <span>Doctor:</span>
-        {doctorName}
+        {doctorName || 'Unknown Doctor'}
       </p>
       <p>
         <span>Date:</span>
-        {new Date(date).toLocaleDateString()}
+        {date ? new Date(date).toLocaleDateString() : 'No date set'}
       </p>
-      <div className="btn-container">
-        <button onClick={() => onEdit(appointment)}>Edit</button>
-        <button onClick={() => onDelete(appointment._id)}>Delete</button>
-      </div>
+      {(onEdit || onDelete) && (
+        <div className="btn-container">
+          {onEdit && <button onClick={() => onEdit({ id, patientName, doctorName, date })}>Edit</button>}
+          {onDelete && <button onClick={() => onDelete(id)}>Delete</button>}
+        </div>
+      )}
     </div>
   );
 };
 
 // PropTypes validation (optional but recommended)
 AppointmentCard.propTypes = {
-  appointment: PropTypes.shape({
-    patientName: PropTypes.string,
-    doctorName: PropTypes.string,
-    date: PropTypes.string,
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
+  id: PropTypes.string,
+  patientName: PropTypes.string,
+  doctorName: PropTypes.string,
+  date: PropTypes.string,
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
 };
 
 export default AppointmentCard;

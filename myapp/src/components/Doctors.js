@@ -19,7 +19,7 @@ const Doctors = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/doctors");
+        const response = await axios.get("http://localhost:5000/api/doctors");
         setDoctors(response.data);
       } catch (err) {
         console.error("Error fetching doctors:", err);
@@ -45,7 +45,7 @@ const Doctors = () => {
     try {
       if (editingDoctorId) {
         const response = await axios.put(
-          `http://localhost:5000/doctors/${editingDoctorId}`,
+          `http://localhost:5000/api/doctors/${editingDoctorId}`,
           newDoctor
         );
         setDoctors((prev) =>
@@ -56,7 +56,7 @@ const Doctors = () => {
         setEditingDoctorId(null);
       } else {
         const response = await axios.post(
-          "http://localhost:5000/doctors/add",
+          "http://localhost:5000/api/doctors/add",
           newDoctor
         );
         setDoctors([...doctors, response.data]);
@@ -75,7 +75,7 @@ const Doctors = () => {
   // Delete a doctor
   const deleteDoctor = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/doctors/${id}`);
+      await axios.delete(`http://localhost:5000/api/doctors/${id}`);
       setDoctors(doctors.filter((doc) => doc._id !== id));
     } catch (err) {
       console.error("Error deleting doctor:", err);
