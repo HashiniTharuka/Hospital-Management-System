@@ -2,64 +2,59 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-require('dotenv').config();
+require('dotenv').config(); // To load environment variables
 
-// Ensure the middleware for file uploads is implemented
-const upload = require('./middleware/upload'); 
+const upload = require('./middleware/upload'); // Import the upload middleware (ensure it's implemented correctly)
 
-// Import routes
-const authRouter = require('./routes/auth');
 const patientsRouter = require('./routes/patients');
 const doctorsRouter = require('./routes/doctors');
 const appointmentsRouter = require('./routes/appointments');
 const contactsRouter = require('./routes/contacts');
+const adminRouter = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Use CORS and body-parser middleware
 app.use(cors());
-app.use(bodyParser.json());  // Parses JSON request bodies
+app.use(bodyParser.json());
 
-// Serve static files for uploaded photos (if file uploads are used in your app)
+// Serve static files for uploaded photos
 app.use('/uploads', express.static('uploads'));
 
-// MongoDB Connection
+// MongoDB connection
 const mongoURI = process.env.MONGO_URI || 'mongodb+srv://your_user:your_password@cluster0.mongodb.net/myDatabase?retryWrites=true&w=majority';
 
 mongoose.connect(mongoURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 })
-  .then(() => console.log('MongoDB database connection established successfully'))
-  .catch((err) => {
-    console.error('Error connecting to MongoDB:', err.message);
-    process.exit(1); // Exit process on failure
-  });
-
-// Routes
-app.use('/api/auth', authRouter);
-app.use('/api/patients', patientsRouter);
-app.use('/api/doctors', doctorsRouter);
-app.use('/api/appointments', appointmentsRouter);
-app.use('/api/contacts', contactsRouter);
-
-// Undefined Route Handler for all unhandled routes
-app.use((req, res) => {
-  res.status(404).json({ message: 'Route not found' });
+.then(() => {
+    console.log('MongoDB database connection established successfully');
+})
+.catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
 });
 
-// General Error Handler (Improved)
+// API Routes
+app.use('/patients', patientsRouter);
+app.use('/doctors', doctorsRouter);
+app.use('/appointments', appointmentsRouter);
+app.use('/contacts', contactsRouter);
+app.use('/admin', adminRouter);
+
+// Error handling middleware for undefined routes
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'Route not found' });
+});
+
+// General error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  const statusCode = err.status || 500;
-  res.status(statusCode).json({
-    message: 'Something went wrong, please try again later',
-    error: err.message,
-  });
+    console.error(err.stack);
+    res.status(500).json({ message: 'Something went wrong, please try again later' });
 });
 
-// Start the Server
+// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`);
 });

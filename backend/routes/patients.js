@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const Patient = require('../models/Patient');
-const upload = require('../middleware/upload');
-const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const upload = require('../middleware/upload'); // Import the upload middleware
 
-// Get all patients (admin only)
-router.get('/', authenticateToken, requireAdmin, (req, res) => {
+// Get all patients
+router.get('/', (req, res) => {
     Patient.find()
         .then(patients => res.json(patients))
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Add new patient (admin only)
-router.post('/add', authenticateToken, requireAdmin, (req, res) => {
+// Add new patient
+router.post('/add', (req, res) => {
     const { name, age, gender } = req.body;
     const newPatient = new Patient({ name, age, gender, photoUrl: '' });
 
@@ -21,8 +20,8 @@ router.post('/add', authenticateToken, requireAdmin, (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Update patient data (admin only)
-router.post('/update/:id', authenticateToken, requireAdmin, (req, res) => {
+// Update patient data
+router.post('/update/:id', (req, res) => {
     Patient.findById(req.params.id)
         .then(patient => {
             if (!patient) return res.status(404).json('Patient not found');
@@ -39,8 +38,8 @@ router.post('/update/:id', authenticateToken, requireAdmin, (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Delete patient by ID (admin only)
-router.delete('/delete/:id', authenticateToken, requireAdmin, (req, res) => {
+// Delete patient by ID
+router.delete('/delete/:id', (req, res) => {
     Patient.findByIdAndDelete(req.params.id)
         .then(patient => {
             if (!patient) return res.status(404).json('Patient not found');
@@ -49,8 +48,8 @@ router.delete('/delete/:id', authenticateToken, requireAdmin, (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Upload photo (admin only)
-router.post('/upload', authenticateToken, requireAdmin, upload.single('photo'), (req, res) => {
+// Upload photo
+router.post('/upload', upload.single('photo'), (req, res) => {
     if (!req.file) return res.status(400).json('No file uploaded');
 
     const photoUrl = `/uploads/${req.file.filename}`; // Updated to use the relative URL

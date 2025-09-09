@@ -2,50 +2,45 @@
 
 const express = require('express');
 const router = express.Router();
-const Appointment = require('../models/Appointment');
-const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const Appointment = require('../models/appointment');
 
-// Get all appointments (admin only) or user's own appointments
-router.route('/').get(authenticateToken, (req, res) => {
-	if (req.user.role === 'admin') {
-		// Admin can see all appointments
-		Appointment.find()
-			.then(appointments => res.json(appointments))
-			.catch(err => res.status(400).json('Error: ' + err));
-	} else {
-		// Users can only see their own appointments
-		Appointment.find({ patientName: req.user.name })
-			.then(appointments => res.json(appointments))
-			.catch(err => res.status(400).json('Error: ' + err));
-	}
+// Get all appointments
+router.route('/').get((req, res) => {
+	Appointment.find()
+		.then(appointments =>
+			res.json(appointments))
+		.catch(err =>
+			res.status(400).json('Error: ' + err));
 });
 
-// Add new appointment (authenticated users only)
-router.route('/add').post(authenticateToken, (req, res) => {
-	const { doctorName, date } = req.body;
-	const patientName = req.user.name; // Use authenticated user's name
-	const newAppointment = new Appointment({ patientName, doctorName, date });
+// Add new appointment
+router.route('/add').post((req, res) => {
+	const { patientName, doctorName, date, time, status, notes } = req.body;
+	const newAppointment = new Appointment({ 
+		patientName, 
+		doctorName, 
+		date, 
+		time, 
+		status: status || 'Scheduled', 
+		notes 
+	});
 
 	newAppointment.save()
 		.then(savedAppointment => res.json(savedAppointment))
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Update appointment data (admin or appointment owner)
-router.route('/update/:id').post(authenticateToken, (req, res) => {
+// Update appointment data
+router.route('/update/:id').post((req, res) => {
 	Appointment.findById(req.params.id)
 		.then(appointment => {
-			if (!appointment) {
-				return res.status(404).json('Appointment not found');
-			}
-			
-			// Check if user is admin or appointment owner
-			if (req.user.role !== 'admin' && appointment.patientName !== req.user.name) {
-				return res.status(403).json('Access denied');
-			}
-
+			appointment.patientName = req.body.patientName;
 			appointment.doctorName = req.body.doctorName;
 			appointment.date = req.body.date;
+			appointment.time = req.body.time;
+			appointment.status = req.body.status;
+			appointment.notes = req.body.notes;
+			appointment.updatedAt = new Date();
 
 			appointment.save()
 				.then(() => res.json('Appointment updated!'))
@@ -54,24 +49,16 @@ router.route('/update/:id').post(authenticateToken, (req, res) => {
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Delete appointment (admin or appointment owner)
+// Delete appointment
 router.route('/delete/:id')
-	.delete(authenticateToken, (req, res) => {
-		Appointment.findById(req.params.id)
-			.then(appointment => {
-				if (!appointment) {
-					return res.status(404).json('Appointment not found');
-				}
-				
-				// Check if user is admin or appointment owner
-				if (req.user.role !== 'admin' && appointment.patientName !== req.user.name) {
-					return res.status(403).json('Access denied');
-				}
-
-				return Appointment.findByIdAndDelete(req.params.id);
-			})
-			.then(() => res.json('Appointment deleted.'))
-			.catch(err => res.status(400).json('Error: ' + err));
+	.delete((req, res) => {
+		Appointment.findByIdAndDelete(req.params.id)
+			.then(
+				() => res
+					.json('Appointment deleted.'))
+			.catch(
+				err => res
+					.status(400).json('Error: ' + err));
 	});
 
 module.exports = router;
