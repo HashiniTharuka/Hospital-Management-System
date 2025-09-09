@@ -1,41 +1,56 @@
 // src/components/AppointmentCard.js
 
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const AppointmentCard = ({ id, patientName, doctorName, date, onEdit, onDelete }) => {
-  return (
-    <div className="appointment-card">
-      <p>
-        <span>Patient:</span>
-        {patientName || 'Unknown Patient'}
-      </p>
-      <p>
-        <span>Doctor:</span>
-        {doctorName || 'Unknown Doctor'}
-      </p>
-      <p>
-        <span>Date:</span>
-        {date ? new Date(date).toLocaleDateString() : 'No date set'}
-      </p>
-      {(onEdit || onDelete) && (
-        <div className="btn-container">
-          {onEdit && <button onClick={() => onEdit({ id, patientName, doctorName, date })}>Edit</button>}
-          {onDelete && <button onClick={() => onDelete(id)}>Delete</button>}
-        </div>
-      )}
-    </div>
-  );
-};
-
-// PropTypes validation (optional but recommended)
-AppointmentCard.propTypes = {
-  id: PropTypes.string,
-  patientName: PropTypes.string,
-  doctorName: PropTypes.string,
-  date: PropTypes.string,
-  onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
+const AppointmentCard = ({ appointment, onEdit, onDelete }) => {
+	return (
+		<div className="appointment-card">
+			<div className="appointment-info">
+				<p>
+					<span>Patient:</span>
+					{appointment.patientName}
+				</p>
+				<p>
+					<span>Doctor:</span>
+					{appointment.doctorName}
+				</p>
+				<p>
+					<span>Date:</span>
+					{new Date(appointment.date).toLocaleDateString()}
+				</p>
+				{appointment.time && (
+					<p>
+						<span>Time:</span>
+						{appointment.time}
+					</p>
+				)}
+				<p>
+					<span>Status:</span>
+					<span className={`status status-${appointment.status?.toLowerCase() || 'scheduled'}`}>
+						{appointment.status || 'Scheduled'}
+					</span>
+				</p>
+				{appointment.notes && (
+					<p>
+						<span>Notes:</span>
+						{appointment.notes}
+					</p>
+				)}
+			</div>
+			<div className='btn-container'>
+				{onEdit && (
+					<button onClick={() => onEdit(appointment)}>
+						Edit
+					</button>
+				)}
+				{onDelete && (
+					<button onClick={() => onDelete(appointment._id)}>
+						Delete
+					</button>
+				)}
+			</div>
+		</div>
+	);
 };
 
 export default AppointmentCard;

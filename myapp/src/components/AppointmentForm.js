@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FaUserMd, FaCalendarAlt } from 'react-icons/fa';
+import axios from 'axios';
 
 const AppointmentForm = ({ onAddAppointment }) => {
-    const [patients, setPatients] = useState([]);
+    const [doctors, setDoctors] = useState([]);
     const [newAppointment, setNewAppointment] = useState({
         patientName: '',
         doctorName: '',
@@ -10,17 +11,10 @@ const AppointmentForm = ({ onAddAppointment }) => {
     });
 
     useEffect(() => {
-        // Fetch patients or set default list
-        const defaultPatients = [
-            { name: 'John Doe' },
-            { name: 'Jane Smith' },
-            { name: 'Michael Johnson' },
-            { name: 'Emily Davis' },
-            { name: 'Robert Wilson' },
-            { name: 'Sarah Brown' },
-            { name: 'David Lee' }
-        ];
-        setPatients(defaultPatients);
+        // Fetch doctors from API
+        axios.get('http://localhost:5000/doctors')
+            .then(response => setDoctors(response.data))
+            .catch(error => console.error('Error fetching doctors:', error));
     }, []);
 
     const handleAddAppointment = (e) => {
@@ -41,8 +35,8 @@ const AppointmentForm = ({ onAddAppointment }) => {
                     <label>Doctor Name:</label>
                     <select value={newAppointment.doctorName} onChange={(e) => setNewAppointment({ ...newAppointment, doctorName: e.target.value })}>
                         <option value="">Select a doctor...</option>
-                        {patients.map((patient, index) => (
-                            <option key={index} value={patient.name}>{patient.name}</option>
+                        {doctors.map((doctor, index) => (
+                            <option key={index} value={doctor.name}>{doctor.name} - {doctor.specialization}</option>
                         ))}
                     </select>
                 </div>
