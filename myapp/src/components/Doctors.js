@@ -1,192 +1,118 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./Doctors.css";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import DoctorCard from './DoctorCard';
+import './Doctors.css';
 
 const Doctors = () => {
-  const [doctors, setDoctors] = useState([]);
-  const [newDoctor, setNewDoctor] = useState({
-    name: "",
-    specialty: "",
-    availability: {
-      date: "",
-      timeRange: "",
-    },
-    imageUrl: "",
-  });
-  const [editingDoctorId, setEditingDoctorId] = useState(null);
+    const [doctors, setDoctors] = useState([]);
+    const [newDoctor, setNewDoctor] = useState({ name: '', specialization: '', availability: '', description: '', image: '' });
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
 
-  // Fetch doctors
-  useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/doctors");
-        setDoctors(response.data);
-      } catch (err) {
-        console.error("Error fetching doctors:", err);
-      }
+    useEffect(() => {
+        axios
+            .get('http://localhost:5000/doctors')
+            .then(response => setDoctors(response.data))
+            .catch(error => console.error('Error fetching doctors:', error));
+    }, []);
+
+    const handleAddDoctor = (e) => {
+        e.preventDefault();
+        axios
+            .post('http://localhost:5000/doctors/add', newDoctor)
+            .then(response => {
+                setDoctors([...doctors, response.data]);
+                setNewDoctor({ name: '', specialization: '', availability: '', description: '', image: '' });
+            })
+            .catch(error => console.error('Error adding doctor:', error));
     };
-    fetchDoctors();
-  }, []);
 
-  // Save or Update a doctor
-  const saveDoctor = async (e) => {
-    e.preventDefault();
-    if (
-      !newDoctor.name ||
-      !newDoctor.specialty ||
-      !newDoctor.availability.date ||
-      !newDoctor.availability.timeRange ||
-      !newDoctor.imageUrl
-    ) {
-      alert("Please fill all fields!");
-      return;
-    }
-
-    try {
-      if (editingDoctorId) {
-        const response = await axios.put(
-          `http://localhost:5000/api/doctors/${editingDoctorId}`,
-          newDoctor
-        );
-        setDoctors((prev) =>
-          prev.map((doc) =>
-            doc._id === editingDoctorId ? response.data : doc
-          )
-        );
-        setEditingDoctorId(null);
-      } else {
-        const response = await axios.post(
-          "http://localhost:5000/api/doctors/add",
-          newDoctor
-        );
-        setDoctors([...doctors, response.data]);
-      }
-      setNewDoctor({
-        name: "",
-        specialty: "",
-        availability: { date: "", timeRange: "" },
-        imageUrl: "",
-      });
-    } catch (err) {
-      console.error("Error saving doctor:", err);
-    }
-  };
-
-  // Delete a doctor
-  const deleteDoctor = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/doctors/${id}`);
-      setDoctors(doctors.filter((doc) => doc._id !== id));
-    } catch (err) {
-      console.error("Error deleting doctor:", err);
-    }
-  };
-
-  // Edit a doctor
-  const startEditing = (doctor) => {
-    setNewDoctor(doctor);
-    setEditingDoctorId(doctor._id);
-  };
-
-  return (
-    <div className="doctors-page">
-      <h1>Manage Doctors</h1>
-
-      <form onSubmit={saveDoctor} className="doctor-form">
-        <input
-          type="text"
-          placeholder="Name"
-          value={newDoctor.name}
-          onChange={(e) =>
-            setNewDoctor({ ...newDoctor, name: e.target.value })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="Specialty"
-          value={newDoctor.specialty}
-          onChange={(e) =>
-            setNewDoctor({ ...newDoctor, specialty: e.target.value })
-          }
-          required
-        />
-        <input
-          type="date"
-          value={newDoctor.availability.date}
-          onChange={(e) =>
-            setNewDoctor({
-              ...newDoctor,
-              availability: { ...newDoctor.availability, date: e.target.value },
+    const handleUpdateDoctor = (id, e) => {
+        e.preventDefault();
+        axios
+            .post(`http://localhost:5000/doctors/update/${id}`, selectedDoctor)
+            .then(response => {
+                const updatedDoctor = { ...selectedDoctor, _id: id };
+                setDoctors(doctors.map(doctor => (doctor._id === id ? updatedDoctor : doctor)));
+                setSelectedDoctor(null);
+                setIsEditMode(false);
             })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="Time Range"
-          value={newDoctor.availability.timeRange}
-          onChange={(e) =>
-            setNewDoctor({
-              ...newDoctor,
-              availability: {
-                ...newDoctor.availability,
-                timeRange: e.target.value,
-              },
-            })
-          }
-          required
-        />
-        <input
-          type="text"
-          placeholder="Image URL"
-          value={newDoctor.imageUrl}
-          onChange={(e) =>
-            setNewDoctor({ ...newDoctor, imageUrl: e.target.value })
-          }
-          required
-        />
-        <button type="submit" className="submit-btn">
-          {editingDoctorId ? "Update Doctor" : "Add Doctor"}
-        </button>
-      </form>
+            .catch(error => console.error('Error updating doctor:', error));
+    };
 
-      <div className="doctor-list">
-        <h2>Doctors List</h2>
-        {doctors.map((doctor) => (
-          <div key={doctor._id} className="doctor-card">
-            <img
-              src={doctor.imageUrl || "https://via.placeholder.com/150"}
-              alt={doctor.name}
-              className="doctor-image"
-            />
-            <div className="doctor-details">
-              <h3>{doctor.name}</h3>
-              <p>Specialty: {doctor.specialty}</p>
-              <p>
-                Availability: {doctor.availability.date} (
-                {doctor.availability.timeRange})
-              </p>
+    const handleDeleteDoctor = (id) => {
+        axios
+            .delete(`http://localhost:5000/doctors/delete/${id}`)
+            .then(response => setDoctors(doctors.filter(doctor => doctor._id !== id)))
+            .catch(error => console.error('Error deleting doctor:', error));
+    };
+
+    const handleEditDoctor = (doctor) => {
+        setSelectedDoctor(doctor);
+        setIsEditMode(true);
+    };
+
+    return (
+        <div className="doctors-page-container">
+            <div className="doctors-page">
+                <header className="doctors-header"></header>
+                <div className='form-sections'>
+                    <h4>{isEditMode ? 'Edit Doctor' : 'Add New Doctor'}</h4>
+                    <form onSubmit={isEditMode ? (e) => handleUpdateDoctor(selectedDoctor._id, e) : handleAddDoctor}>
+                        <label>Name:</label>
+                        <input
+                            type="text"
+                            value={isEditMode ? selectedDoctor.name : newDoctor.name}
+                            onChange={(e) => isEditMode ? setSelectedDoctor({ ...selectedDoctor, name: e.target.value }) : setNewDoctor({ ...newDoctor, name: e.target.value })}
+                        />
+                        <label>Specialization:</label>
+                        <input
+                            type="text"
+                            value={isEditMode ? selectedDoctor.specialization : newDoctor.specialization}
+                            onChange={(e) => isEditMode ? setSelectedDoctor({ ...selectedDoctor, specialization: e.target.value }) : setNewDoctor({ ...newDoctor, specialization: e.target.value })}
+                        />
+                        <label>Availability:</label>
+                        <input
+                            type="text"
+                            value={isEditMode ? selectedDoctor.availability : newDoctor.availability}
+                            onChange={(e) => isEditMode ? setSelectedDoctor({ ...selectedDoctor, availability: e.target.value }) : setNewDoctor({ ...newDoctor, availability: e.target.value })}
+                        />
+                        <label>Description:</label>
+                        <textarea
+                            value={isEditMode ? selectedDoctor.description : newDoctor.description}
+                            onChange={(e) => isEditMode ? setSelectedDoctor({ ...selectedDoctor, description: e.target.value }) : setNewDoctor({ ...newDoctor, description: e.target.value })}
+                        />
+                        <label>Image URL:</label>
+                        <input
+                            type="url"
+                            value={isEditMode ? selectedDoctor.image : newDoctor.image}
+                            onChange={(e) => isEditMode ? setSelectedDoctor({ ...selectedDoctor, image: e.target.value }) : setNewDoctor({ ...newDoctor, image: e.target.value })}
+                        />
+                        <button type="submit">{isEditMode ? 'Update Doctor' : 'Add Doctor'}</button>
+                    </form>
+                </div>
+                <div className='doctors-section'>
+                    <h3>Doctors ({doctors.length})</h3>
+                    <div className="doctor-list">
+                        {doctors.map(doctor => (
+                            <DoctorCard
+                                key={doctor._id}
+                                id={doctor._id}
+                                name={doctor.name}
+                                specialization={doctor.specialization}
+                                availability={doctor.availability}
+                                description={doctor.description}
+                                image={doctor.image}
+                                dateAdded={doctor.dateAdded}
+                                onEdit={() => handleEditDoctor(doctor)}
+                                onDelete={() => handleDeleteDoctor(doctor._id)}
+                            />
+                        ))}
+                    </div>
+                </div>
             </div>
-            <div className="doctor-actions">
-              <button
-                className="edit-btn"
-                onClick={() => startEditing(doctor)}
-              >
-                Edit
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => deleteDoctor(doctor._id)}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+        </div>
+    );
 };
 
 export default Doctors;
