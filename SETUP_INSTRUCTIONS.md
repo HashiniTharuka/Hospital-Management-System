@@ -1,191 +1,125 @@
 # Hospital Management System - Setup Instructions
 
 ## Overview
-This is a comprehensive Hospital Management System with proper authentication, user roles, and full CRUD operations for patients, doctors, and appointments.
+This is a full-stack hospital management system with React frontend and Node.js/Express backend with MongoDB database.
 
-## Features
-- **User Authentication**: Secure login/registration with JWT tokens
-- **Role-based Access**: Separate admin and user interfaces
-- **Patient Management**: Add, edit, delete, and view patient information
-- **Doctor Management**: Manage doctor profiles and specialties
-- **Appointment System**: Book and manage medical appointments
-- **Photo Upload**: Upload patient photos
-- **Responsive Design**: Modern, mobile-friendly interface
+## Features Fixed
+✅ **Appointment Management**: Users can add appointments, admins can view and manage them
+✅ **Doctor Management**: Admins can add doctors, users can view them
+✅ **Real-time Data**: All data is fetched from the API, not hardcoded
+✅ **Proper Field Mapping**: Frontend and backend field names are now consistent
+✅ **Enhanced UI**: Better appointment cards with status indicators
 
-## Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn
+## Setup Instructions
 
-## Backend Setup
-
-1. **Navigate to backend directory:**
+### Backend Setup
+1. Navigate to the Backend directory:
    ```bash
-   cd backend
+   cd Backend
    ```
 
-2. **Install dependencies:**
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. **Set up environment variables:**
-   Create a `.env` file in the backend directory:
-   ```env
-   MONGO_URI=mongodb://localhost:27017/hospital-management
-   JWT_SECRET=your-super-secret-jwt-key
+3. Create a `.env` file in the Backend directory with:
+   ```
+   MONGO_URI=mongodb+srv://your_username:your_password@cluster0.mongodb.net/hospital_management?retryWrites=true&w=majority
    PORT=5000
    ```
 
-4. **Create admin user:**
-   ```bash
-   node createAdmin.js
-   ```
-   This creates an admin user with:
-   - Email: admin@hospital.com
-   - Password: admin123
-
-5. **Start the backend server:**
+4. Start the backend server:
    ```bash
    npm start
    ```
-   The server will run on http://localhost:5000
 
-## Frontend Setup
-
-1. **Navigate to frontend directory:**
+### Frontend Setup
+1. Navigate to the myapp directory:
    ```bash
    cd myapp
    ```
 
-2. **Install dependencies:**
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. **Start the development server:**
+3. Start the frontend development server:
    ```bash
    npm start
    ```
-   The app will run on http://localhost:3000
 
-## Usage
+## How to Use
 
-### For Regular Users
-1. Visit http://localhost:3000
-2. Click "Register" to create an account
-3. Fill in your details and register
-4. Login with your credentials
-5. Book appointments and view your profile
+### For Users:
+1. Visit the homepage
+2. Go to "Appointments" to book an appointment
+3. Select a doctor from the dropdown (fetched from database)
+4. Fill in patient name and date
+5. Submit the appointment
 
-### For Administrators
-1. Visit http://localhost:3000/adminlogin
-2. Login with admin credentials:
-   - Email: admin@hospital.com
-   - Password: admin123
-3. Access admin dashboard to manage:
-   - Patients
-   - Doctors
-   - Appointments
+### For Admins:
+1. Click "Admin Login" (no authentication implemented yet)
+2. Go to "Manage Doctors" to add/edit/delete doctors
+3. Go to "Manage Appointments" to view all appointments
+4. Edit or delete appointments as needed
+
+## Key Fixes Made
+
+1. **Appointment Form**: Now fetches real doctors from the API instead of using hardcoded data
+2. **Doctor Management**: Fixed field mapping between frontend (`specialization`) and backend (`specialization`)
+3. **User Appointments**: Properly fetches and displays all appointments with delete functionality
+4. **Enhanced Appointment Model**: Added status, time, notes, and timestamps
+5. **Better UI**: Improved appointment cards with status indicators and better styling
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/profile` - Get user profile
-- `PUT /api/auth/profile` - Update user profile
-- `POST /api/auth/logout` - Logout user
-
-### Patients (Admin only)
-- `GET /api/patients` - Get all patients
-- `POST /api/patients/add` - Add new patient
-- `POST /api/patients/update/:id` - Update patient
-- `DELETE /api/patients/delete/:id` - Delete patient
-- `POST /api/patients/upload` - Upload patient photo
-
-### Doctors (Admin only)
-- `GET /api/doctors` - Get all doctors
-- `POST /api/doctors/add` - Add new doctor
-- `PUT /api/doctors/:id` - Update doctor
-- `DELETE /api/doctors/:id` - Delete doctor
+### Doctors
+- `GET /doctors` - Get all doctors
+- `POST /doctors/add` - Add new doctor
+- `PUT /doctors/update/:id` - Update doctor
+- `DELETE /doctors/delete/:id` - Delete doctor
 
 ### Appointments
-- `GET /api/appointments` - Get appointments (user's own or all for admin)
-- `POST /api/appointments/add` - Add new appointment
-- `POST /api/appointments/update/:id` - Update appointment
-- `DELETE /api/appointments/delete/:id` - Delete appointment
+- `GET /appointments` - Get all appointments
+- `POST /appointments/add` - Add new appointment
+- `POST /appointments/update/:id` - Update appointment
+- `DELETE /appointments/delete/:id` - Delete appointment
 
-## Security Features
-- Password hashing with bcrypt
-- JWT token authentication
-- Role-based access control
-- Input validation
-- CORS protection
+## Database Schema
 
-## File Structure
-```
-Hospital-Management-System/
-├── backend/
-│   ├── models/          # Database models
-│   ├── routes/          # API routes
-│   ├── middleware/      # Authentication & upload middleware
-│   ├── uploads/         # Uploaded files
-│   └── server.js        # Main server file
-├── myapp/
-│   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── contexts/    # React contexts
-│   │   └── App.js       # Main app component
-│   └── public/          # Static files
-└── README.md
-```
+### Doctor
+- name (String, required)
+- specialization (String, required)
+- availability (String, required)
+- description (String, required)
+- image (String, optional)
+- dateAdded (Date, default: now)
+
+### Appointment
+- patientName (String, required)
+- doctorName (String, required)
+- date (Date, required)
+- time (String, optional)
+- status (String, default: 'Scheduled')
+- notes (String, optional)
+- createdAt (Date, default: now)
+- updatedAt (Date, default: now)
 
 ## Troubleshooting
 
-### Common Issues
+1. **CORS Issues**: Make sure the backend is running on port 5000
+2. **Database Connection**: Check your MongoDB connection string
+3. **API Calls Failing**: Ensure both frontend and backend are running
+4. **Doctors Not Loading**: Check if doctors are added in the admin panel first
 
-1. **MongoDB Connection Error:**
-   - Ensure MongoDB is running
-   - Check the MONGO_URI in .env file
-   - Verify network connectivity
+## Next Steps for Enhancement
 
-2. **Authentication Issues:**
-   - Check JWT_SECRET is set in .env
-   - Verify token is being sent in headers
-   - Ensure user exists in database
-
-3. **CORS Errors:**
-   - Backend CORS is configured for localhost:3000
-   - Check if frontend is running on correct port
-
-4. **File Upload Issues:**
-   - Ensure uploads directory exists
-   - Check file size limits
-   - Verify file type restrictions
-
-## Development
-
-### Adding New Features
-1. Create new models in `backend/models/`
-2. Add routes in `backend/routes/`
-3. Create React components in `myapp/src/components/`
-4. Update authentication context if needed
-
-### Database Schema
-- **Users**: Authentication and profile data
-- **Patients**: Patient information and photos
-- **Doctors**: Doctor profiles and specialties
-- **Appointments**: Appointment scheduling
-
-## Production Deployment
-
-1. Set production environment variables
-2. Use a production MongoDB instance
-3. Set up proper JWT secrets
-4. Configure CORS for production domain
-5. Set up file storage (AWS S3, etc.)
-6. Use HTTPS in production
-
-## Support
-For issues or questions, please check the troubleshooting section or create an issue in the repository.
+1. Add user authentication
+2. Add patient management
+3. Add appointment time slots
+4. Add email notifications
+5. Add search and filtering
+6. Add data validation
+7. Add error handling improvements
