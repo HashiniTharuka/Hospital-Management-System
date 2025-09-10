@@ -1,7 +1,7 @@
 /* Modern Admin Dashboard UI */
 .admin-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 20px;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .logout-button {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
     padding: 20px 30px;
@@ -141,7 +141,7 @@
 .logout-button:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 40px rgba(238, 90, 36, 0.4);
-    background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
 .logout-button .icon {
@@ -160,7 +160,7 @@
 
 /* Admin Navbar */
 .admin-nav {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 15px 0;
     border-radius: 0 0 20px 20px;
     margin-bottom: 30px;
