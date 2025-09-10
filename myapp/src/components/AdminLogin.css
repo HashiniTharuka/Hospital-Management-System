@@ -5,11 +5,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: #f4f4f9;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   
   .login-box {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+   background: linear-gradient(135deg, #e5e7eb 0%, #b6b1bc 100%);
 
     padding: 2rem;
     border-radius: 8px;
@@ -27,23 +27,25 @@
     display: flex;
     align-items: center;
     margin-bottom: 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
   }
   
   .input-group .icon {
     margin-right: 0.5rem;
-    color: #007bff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   
   .input-group input {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #ddd;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border-radius: 4px;
   }
   
   .login-button {
     background-color: #007bff;
-    color: #fff;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     border: none;
     padding: 0.75rem;
     border-radius: 4px;
@@ -53,6 +55,6 @@
   }
   
   .login-button:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   

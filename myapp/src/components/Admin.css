@@ -91,7 +91,7 @@
 }
 
 .nav-button {
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: #2c3e50;
     text-decoration: none;
     padding: 20px 30px;
@@ -149,7 +149,7 @@
 }
 
 .admin-content {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.95) url('../assets/doc2.jpg') center/cover no-repeat;
     border-radius: 25px;
     padding: 40px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);

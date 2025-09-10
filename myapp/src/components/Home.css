@@ -1,56 +1,62 @@
-/* Home.css */
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: #f5f7fa;
-  color: #333;
+  background: linear-gradient(135deg, #fdfbff 0%, #f4eaff 100%);
+  color: #2e1a47;
 }
 
 .page-content {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 40px 20px;
 }
 
 /* Hero Section */
 .hero-section {
-  height: 400px;
+  height: 450px;
   background-position: center;
   background-size: cover;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 70px;
   position: relative;
-  border-radius: 20px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  margin-bottom: 50px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(80, 40, 120, 0.2);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(70, 0, 120, 0.4);
 }
 
 .hero-text {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 30px 50px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 40px 60px;
   border-radius: 20px;
   text-align: center;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  backdrop-filter: blur(20px);
   color: #fff;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   max-width: 80%;
 }
 
 .hero-text h2 {
   font-weight: 600;
-  font-size: 2.8rem;
-  margin-bottom: 15px;
-  text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.6);
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 .hero-text p {
   font-size: 1.25rem;
   font-weight: 300;
-  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.5);
+  color: #f9f3ff;
 }
 
 /* Features Section */
@@ -62,67 +68,58 @@ body {
 }
 
 .feature {
-  background: rgba(255, 255, 255, 0.7);
+  background: #fff;
   width: 350px;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(120, 60, 180, 0.15);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
   display: flex;
   flex-direction: column;
 }
 
 .feature:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  transform: translateY(-12px);
+  box-shadow: 0 18px 40px rgba(120, 60, 180, 0.25);
 }
 
 .feature-image {
   width: 100%;
+  height: 220px;
   object-fit: cover;
-  height: 200px;
-  border-bottom: 4px solid #5c9ded;
-  transition: transform 0.3s ease;
+  border-bottom: 5px solid #a36cf3;
+  transition: transform 0.4s ease;
 }
 
 .feature:hover .feature-image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .feature-info {
-  padding: 20px 25px;
+  padding: 25px 20px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 12px;
+  gap: 15px;
   text-align: center;
 }
 
 .icon {
   font-size: 2.5rem;
-  color: #5c9ded;
+  color: #a36cf3;
 }
 
 .feature-info h3 {
   font-weight: 600;
-  font-size: 1.5rem;
-  color: #222;
+  font-size: 1.6rem;
+  color: #4a2670;
 }
 
 .feature-info p {
   font-weight: 300;
   font-size: 1rem;
-  color: #555;
+  color: #6c4d9e;
   margin: 0;
-}
-
-/* Glassmorphism effect */
-.glass-effect {
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
 }
