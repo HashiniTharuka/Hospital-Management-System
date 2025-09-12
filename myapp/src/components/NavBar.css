@@ -17,7 +17,7 @@ nav ul {
 }
 
 nav ul li {
-    margin: 0 15px;
+    margin: 0 1px;
 }
 
 nav ul li a {
@@ -50,24 +50,24 @@ nav ul li.admin-login {
 /* Position the admin login button in the top-right corner */
 .admin-login-button {
     position: absolute;
-    top: 6px; /* Adjust the top distance */
+    top: 17px; /* Adjust the top distance */
     right: 20px; /* Adjust the right distance */
     padding: 10px 20px;
-    background-color: #375e5f; /* Button color */
+  background: linear-gradient(270deg, #4f2b73, #667eea, #572d81);
     color: white;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 15px;
     transition: background-color 0.3s ease;
 }
 
 .admin-login-button:hover {
-    background-color: #0c6e51; /* Darker color on hover */
+  background: linear-gradient(270deg, #667eea,#693c96,#667eea, #764ba2);
     margin-top: 2PX;
 }
 
 .admin-login-button .icon {
-    margin-right: 8px; /* Space between icon and text */
+    margin-right: 7px; /* Space between icon and text */
 }

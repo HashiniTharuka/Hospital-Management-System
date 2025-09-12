@@ -136,6 +136,7 @@
     gap: 12px;
     min-width: 200px;
     justify-content: center;
+    
 }
 
 .logout-button:hover {
@@ -191,6 +192,8 @@
     display: flex;
     align-items: center;
     gap: 8px;
+    background: linear-gradient(270deg, #693c96, #667eea, #764ba2);
+
 }
 
 .admin-nav a:hover {
@@ -209,6 +212,7 @@
     .nav-button, .logout-button {
         min-width: 250px;
         padding: 15px 25px;
+        
     }
     
     .admin-header h1 {
