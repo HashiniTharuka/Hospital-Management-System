@@ -11,6 +11,7 @@ const doctorsRouter = require('./routes/doctors');
 const appointmentsRouter = require('./routes/appointments');
 const contactsRouter = require('./routes/contacts');
 const adminRouter = require('./routes/admin');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -42,6 +43,7 @@ app.use('/doctors', doctorsRouter);
 app.use('/appointments', appointmentsRouter);
 app.use('/contacts', contactsRouter);
 app.use('/admin', adminRouter);
+app.use('/api/users', userRoutes);
 
 // Error handling middleware for undefined routes
 app.use((req, res, next) => {

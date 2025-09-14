@@ -20,6 +20,9 @@ import './App.css';
 import './components/NavBar.css';
 import Doctors_view from './components/Doctors_view';
 import UserAppointments from './components/UserAppointments';  // Import the component
+import UserRegister from './components/UserRegister';
+import UserLogin from './components/UserLogin';
+import BookAppointment from './components/BookAppointment';
 
 import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt } from 'react-icons/fa';
 
@@ -32,6 +35,14 @@ const AdminProtectedRoute = ({ children }) => {
         return null;
     }
     return children;
+};
+
+const UserProtectedRoute = ({ children }) => {
+  if (!localStorage.getItem('userToken')) {
+    window.location.href = '/login';
+    return null;
+  }
+  return children;
 };
 
 const ConditionalNavBar = () => {
@@ -113,7 +124,11 @@ const App = () => {
                     <Route path="/services/general-checkups" element={<GeneralCheckupsDetail />} />
                     <Route path="/services/emergency-services" element={<EmergencyServicesDetail />} />
                     <Route path="/services/surgery" element={<SurgeryDetail />} />
-                    <Route path="/appointments" element={<Appointments />} />
+                    <Route path="/appointments" element={
+                        <UserProtectedRoute>
+                            <Appointments />
+                        </UserProtectedRoute>
+                    } />
                     <Route path="/doctors" element={
                         <AdminProtectedRoute>
                             <Doctors />
@@ -128,6 +143,13 @@ const App = () => {
                             <UserAppointments />
                         </AdminProtectedRoute>
                     } />
+                    <Route path="/register" element={<UserRegister />} />
+                    <Route path="/login" element={<UserLogin />} />
+                    <Route path="/book-appointment" element={
+                        <UserProtectedRoute>
+                          <BookAppointment />
+                        </UserProtectedRoute>
+                      } />
 
                     <Route path="/" element={<Home />} /> {/* Default to Home when no specific route matches */}
                 </Routes>
