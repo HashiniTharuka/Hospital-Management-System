@@ -23,6 +23,17 @@ import UserAppointments from './components/UserAppointments';  // Import the com
 
 import { FaHome, FaUserMd, FaClipboardList, FaUsers, FaInfoCircle, FaPhoneAlt, FaCog, FaSignInAlt } from 'react-icons/fa';
 
+const isAdminAuthenticated = () => !!localStorage.getItem('adminToken');
+
+// Protect route wrapper
+const AdminProtectedRoute = ({ children }) => {
+    if (!isAdminAuthenticated()) {
+        window.location.href = '/adminlogin';
+        return null;
+    }
+    return children;
+};
+
 const ConditionalNavBar = () => {
     const location = useLocation();
     const hideNavBarPaths = ['/admin', '/adminlogin', '/doctors', '/patients_view']; // Paths where NavBar should be hidden
@@ -33,12 +44,7 @@ const ConditionalNavBar = () => {
         return (
             <nav className="admin-nav">
                 <ul>
-                    <li>
-                        <Link to="/doctors">Doctors</Link>
-                    </li>
-                    <li>
-                        <Link to="/user-appointments/1">User Appointments</Link>  {/* Example userId */}
-                    </li>
+                    
                     <li>
                         <Link to="/home">Logout</Link>
                     </li>
@@ -108,12 +114,20 @@ const App = () => {
                     <Route path="/services/emergency-services" element={<EmergencyServicesDetail />} />
                     <Route path="/services/surgery" element={<SurgeryDetail />} />
                     <Route path="/appointments" element={<Appointments />} />
-                    <Route path="/doctors" element={<Doctors />} />
+                    <Route path="/doctors" element={
+                        <AdminProtectedRoute>
+                            <Doctors />
+                        </AdminProtectedRoute>
+                    } />
                     <Route path="/patients" element={<Patients />} />
                     <Route path="/admin" element={<Admin />} />
                     <Route path="/adminlogin" element={<AdminLogin />} />
                     <Route path="/doctorview" element={<Doctors_view />} />
-                    <Route path="/user-appointments/:userId" element={<UserAppointments />} /> {/* Corrected this line */}
+                    <Route path="/user-appointments/:userId" element={
+                        <AdminProtectedRoute>
+                            <UserAppointments />
+                        </AdminProtectedRoute>
+                    } />
 
                     <Route path="/" element={<Home />} /> {/* Default to Home when no specific route matches */}
                 </Routes>
